@@ -4,8 +4,8 @@
   "description": "Stay informed about the weather whenever from wherever.",
   "main": "index.js",
   "scripts": {
-    "build:js": "babel src/js -o public/js/main.js",
-    "watch:scss": "node-sass -w src/scss -o public/css --output-style compressed",
+    "build": "babel public/js -d public/js",
+    "watch": "node-sass -w public/scss -o public/css --output-style compressed",
     "serve": "http-server public"
   },
   "repository": {
@@ -27,10 +27,6 @@
   },
   "homepage": "https://github.com/ekaranjaa/weather-app#readme",
   "devDependencies": {
-    "@babel/cli": "^7.10.5",
-    "@babel/core": "^7.11.4",
-    "@babel/preset-env": "^7.11.0",
-    "babel-preset-minify": "^0.5.1",
     "http-server": "^0.12.3",
     "node-sass": "^4.14.1"
   }

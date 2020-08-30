@@ -1,3 +1,29 @@
-"use strict";Object.defineProperty(exports,"__esModule",{value:!0}),exports["default"]=void 0;function asyncGeneratorStep(a,b,c,d,e,f,g){try{var h=a[f](g),i=h.value}catch(a){return void c(a)}h.done?b(i):Promise.resolve(i).then(d,e)}function _asyncToGenerator(a){return function(){var b=this,c=arguments;return new Promise(function(d,e){function f(a){asyncGeneratorStep(h,d,e,f,g,"next",a)}function g(a){asyncGeneratorStep(h,d,e,f,g,"throw",a)}var h=a.apply(b,c);f(void 0)})}}function _classCallCheck(a,b){if(!(a instanceof b))throw new TypeError("Cannot call a class as a function")}function _defineProperties(a,b){for(var c,d=0;d<b.length;d++)c=b[d],c.enumerable=c.enumerable||!1,c.configurable=!0,"value"in c&&(c.writable=!0),Object.defineProperty(a,c.key,c)}function _createClass(a,b,c){return b&&_defineProperties(a.prototype,b),c&&_defineProperties(a,c),a}var HTTP=/*#__PURE__*/function(){function a(){_classCallCheck(this,a),this.response,this.data}return _createClass(a,[{key:"get",value:function(){var a=_asyncToGenerator(/*#__PURE__*/regeneratorRuntime.mark(function a(b){return regeneratorRuntime.wrap(function(a){for(;;)switch(a.prev=a.next){case 0:return this.response=fetch(b),a.next=3,this.response;case 3:return a.next=5,a.sent.json();case 5:return this.data=a.sent,a.abrupt("return",this.data);case 7:case"end":return a.stop();}},a,this)}));return function get(){return a.apply(this,arguments)}}()},{key:"post",value:function(){var a=_asyncToGenerator(/*#__PURE__*/regeneratorRuntime.mark(function a(b,c){return regeneratorRuntime.wrap(function(a){for(;;)switch(a.prev=a.next){case 0:return a.next=2,fetch(b,{method:"POST",headers:{"Content-type":"application/json"},body:JSON.stringify(c)});case 2:return this.response=a.sent,a.next=5,this.response.json();case 5:return this.data=a.sent,a.abrupt("return",this.data);case 7:case"end":return a.stop();}},a,this)}));return function post(){return a.apply(this,arguments)}}()},{key:"put",value:function(){var a=_asyncToGenerator(/*#__PURE__*/regeneratorRuntime.mark(function a(b,c){return regeneratorRuntime.wrap(function(a){for(;;)switch(a.prev=a.next){case 0:return a.next=2,fetch(b,{method:"PUT",headers:{"Content-type":"application/json"},body:JSON.stringify(c)});case 2:return this.response=a.sent,a.next=5,this.response.json();case 5:return this.data=a.sent,a.abrupt("return",this.data);case 7:case"end":return a.stop();}},a,this)}));return function put(){return a.apply(this,arguments)}}()},{key:"delete",value:function(){var a=_asyncToGenerator(/*#__PURE__*/regeneratorRuntime.mark(function a(b){return regeneratorRuntime.wrap(function(a){for(;;)switch(a.prev=a.next){case 0:return this.response=fetch(b,{method:"DELETE"}),a.next=3,this.response;case 3:return a.next=5,a.sent.json();case 5:return this.data=a.sent,a.abrupt("return",this.data);case 7:case"end":return a.stop();}},a,this)}));return function _delete(){return a.apply(this,arguments)}}()}]),a}(),_default=HTTP;exports["default"]=_default;
-"use strict";"serviceWorker"in navigator&&(window.onload=function(){navigator.serviceWorker.register("/sw.js").then(function(a){return console.log("SW registered",a)})["catch"](function(a){return console.log("SW registration failed",a)})});
-"use strict";
+import HTTP from './modules/http.js';
+import * as UI from './modules/ui.js';
+
+document.addEventListener('DOMContentLoaded', () => {
+   UI.loadBg();
+});
+UI.activateMenu();
+
+navigator.geolocation.getCurrentPosition((position) => {
+   const req = new HTTP();
+   let lat = position.coords.latitude;
+   let long = position.coords.longitude;
+
+   req.get(
+      `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${long}&appid=bbd01c6c17c4679bbe4ed1f606945865`
+   )
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
+});
+
+// Register the service worker
+if ('serviceWorker' in navigator) {
+   window.onload = () => {
+      navigator.serviceWorker
+         .register('/sw.js')
+         .then((reg) => console.log('SW registered', reg))
+         .catch((err) => console.log('SW registration failed', err));
+   };
+}
