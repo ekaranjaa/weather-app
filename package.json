@@ -1,0 +1,37 @@
+{
+  "name": "weather-app",
+  "version": "1.0.0",
+  "description": "Stay informed about the weather whenever from wherever.",
+  "main": "index.js",
+  "scripts": {
+    "build:js": "babel src/js -o public/js/main.js",
+    "watch:scss": "node-sass -w src/scss -o public/css --output-style compressed",
+    "serve": "http-server public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/ekaranjaa/weather-app.git"
+  },
+  "keywords": [
+    "weather-app",
+    "javascript",
+    "css",
+    "html",
+    "es6",
+    "babel"
+  ],
+  "author": "Emmanuel Karanja",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ekaranjaa/weather-app/issues"
+  },
+  "homepage": "https://github.com/ekaranjaa/weather-app#readme",
+  "devDependencies": {
+    "@babel/cli": "^7.10.5",
+    "@babel/core": "^7.11.4",
+    "@babel/preset-env": "^7.11.0",
+    "babel-preset-minify": "^0.5.1",
+    "http-server": "^0.12.3",
+    "node-sass": "^4.14.1"
+  }
+}

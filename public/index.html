@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#000">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="msapplication-config" content="images/icons/browserconfig.xml">
+    <title>Weather App</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="shortcut icon" href="favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="images/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="images/icons/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="images/icons/apple-touch-icon.png">
+    <link rel="mask-icon" href="images/icons/safari-pinned-tab.svg" color="#5bbad5">
+    <script src="https://kit.fontawesome.com/885fbd8d84.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="css/weather-icons.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="home">
+            <nav class="navbar">
+                <div class="logo"><a href="/">Smash It</a></div>
+                <button class="menu-toggle"><i class="fas fa-bars"></i></button>
+            </nav>
+            <div class="weather">
+                <main class="weather-current">
+                    <div class="time">
+                        <h2>Nairobi</h2>
+                        <p>21:00 Sun Aug 2020</p>
+                    </div>
+                    <div class="status">
+                        <p class="icon">
+                            <i class="wi wi-night-sleet"></i>
+                        </p>
+                        <h1 class="units">30<sup>o</sup></h1>
+                    </div>
+                </main>
+                <section class="weather-weekly">
+                    <div class="card">
+                        <div class="card-head">
+                            <p>Monday</p>
+                        </div>
+                        <div class="card-body">
+                            <i class="wi wi-day-cloudy"></i>
+                        </div>
+                        <div class="card-footer">
+                            <p class="units">20<sup>o</sup></p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-head">
+                            <p>Tuesday</p>
+                        </div>
+                        <div class="card-body">
+                            <i class="wi wi-day-sleet"></i>
+                        </div>
+                        <div class="card-footer">
+                            <p class="units">20<sup>o</sup></p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-head">
+                            <p>Wendesday</p>
+                        </div>
+                        <div class="card-body">
+                            <i class="wi wi-day-haze"></i>
+                        </div>
+                        <div class="card-footer">
+                            <p class="units">20<sup>o</sup></p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-head">
+                            <p>Thursday</p>
+                        </div>
+                        <div class="card-body">
+                            <i class="wi wi-sunset"></i>
+                        </div>
+                        <div class="card-footer">
+                            <p class="units">20<sup>o</sup></p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-head">
+                            <p>Friday</p>
+                        </div>
+                        <div class="card-body">
+                            <i class="wi wi-day-sunny"></i>
+                        </div>
+                        <div class="card-footer">
+                            <p class="units">20<sup>o</sup></p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-head">
+                            <p>Saturday</p>
+                        </div>
+                        <div class="card-body">
+                            <i class="wi wi-day-cloudy-windy"></i>
+                        </div>
+                        <div class="card-footer">
+                            <p class="units">20<sup>o</sup></p>
+                        </div>
+                    </div>
+                </section>
+                <section class="weather-recent">
+                    <h3>Your recent searches</h3>
+                    <div class="results">
+                        <div class="card">
+                            <div class="card-head">
+                                <p>Nairobi</p>
+                            </div>
+                            <div class="card-body">
+                                <i class="wi wi-day-sprinkle"></i>
+                            </div>
+                            <div class="card-footer">
+                                <p class="units">20<sup>o</sup></p>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-head">
+                                <p>Mombasa</p>
+                            </div>
+                            <div class="card-body">
+                                <i class="wi wi-day-sleet-storm"></i>
+                            </div>
+                            <div class="card-footer">
+                                <p class="units">20<sup>o</sup></p>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-head">
+                                <p>Kisumu</p>
+                            </div>
+                            <div class="card-body">
+                                <i class="wi wi-day-windy"></i>
+                            </div>
+                            <div class="card-footer">
+                                <p class="units">20<sup>o</sup></p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+        <div class="search">
+            <div class="search-head">
+                <div class="search-field">
+                    <i class="fas fa-search-location icon"></i>
+                    <input type="search" name="query" id="search" class="input" placeholder="Type in your location">
+                </div>
+                <button class="menu-toggle"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="recent">
+                <p><i class="fas fa-history icon"></i>Nairobi<i class="fas fa-times icon"></i></p>
+                <p><i class="fas fa-history icon"></i>Mombasa<i class="fas fa-times icon"></i></p>
+                <p><i class="fas fa-history icon"></i>Kisumu<i class="fas fa-times icon"></i></p>
+            </div>
+            <div class="results"></div>
+        </div>
+    </div>
+
+    <script src="./js/main.js"></script>
+</body>
+
+</html>
