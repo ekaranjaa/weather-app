@@ -1,8 +1,8 @@
 export function loadBg() {
    if (window.outerWidth > 768) {
-      document.body.style.background = "url('../images/bg.jpg')";
+      document.body.style.background = "url('/images/bg.jpg')";
    } else {
-      document.body.style.background = "url('../images/bg2.jpg')";
+      document.body.style.background = "url('/images/bg2.jpg')";
    }
    document.body.style.backgroundPosition = 'center';
    document.body.style.backgroundSize = 'cover';
@@ -10,7 +10,7 @@ export function loadBg() {
    document.body.style.backgroundAttachment = 'fixed';
 }
 
-export function activateMenu() {
+export function activateSidebar() {
    const menu = document.querySelector('.search');
    const toggleBtn = document.querySelector('.menu-toggle');
    const closeBtn = document.querySelector('.menu-close');
