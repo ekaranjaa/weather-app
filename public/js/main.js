@@ -8,13 +8,17 @@ UI.activateMenu();
 
 navigator.geolocation.getCurrentPosition((position) => {
    const req = new HTTP();
-   let lat = position.coords.latitude;
-   let long = position.coords.longitude;
+   const lat = position.coords.latitude;
+   const long = position.coords.longitude;
 
-   req.get(
-      `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${long}&appid=bbd01c6c17c4679bbe4ed1f606945865`
-   )
-      .then((res) => console.log(res))
+   req.get('/env.json')
+      .then((res) => {
+         req.get(
+            `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${long}&appid=${res.apiKey}`
+         )
+            .then((res) => console.log(res))
+            .catch((err) => console.log(err));
+      })
       .catch((err) => console.log(err));
 });
 
