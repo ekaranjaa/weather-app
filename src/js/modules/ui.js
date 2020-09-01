@@ -1,100 +1,155 @@
 import Icons from './icons.js';
 
 export function loadBg() {
-   if (window.outerWidth > 768) {
-      document.body.style.background = "url('/images/bg.jpg')";
-   } else {
-      document.body.style.background = "url('/images/bg2.jpg')";
-   }
-   document.body.style.backgroundPosition = 'center';
-   document.body.style.backgroundSize = 'cover';
-   document.body.style.backgroundRepeat = 'no-repeat';
-   document.body.style.backgroundAttachment = 'fixed';
+   document.body.classList.add('loaded');
 }
 
-export function activateSidebar() {
-   const menu = document.querySelector('.search');
-   const toggleBtn = document.querySelector('.menu-toggle');
-   const closeBtn = document.querySelector('.menu-close');
+export function loading() {
+   const currentWeatherEl = document.getElementById('currentWeather');
+   const hourlyWeatherEl = document.getElementById('hourlyWeather');
+   const dailyWeatherEl = document.querySelector('#dailyWeather table tbody');
 
-   toggleBtn.onclick = () => {
-      document.body.classList.toggle('hide_content');
-      menu.parentElement.classList.toggle('block');
-      menu.classList.toggle('active');
-   };
+   currentWeatherEl.innerHTML = `
+      <div class="spinner"></div>
+   `;
 
-   closeBtn.onclick = () => {
-      document.body.classList.remove('hide_content');
-      menu.parentElement.classList.remove('block');
-      menu.classList.remove('active');
-   };
+   hourlyWeatherEl.innerHTML = `
+      <div class="spinner"></div>
+   `;
+
+   dailyWeatherEl.innerHTML = `
+      <tr>
+         <td></td>
+         <td></td>
+         <td>
+            <div class="spinner"></div>
+         </td>
+         <td></td>
+         <td></td>
+      </tr>
+   `;
 }
 
 export function setCurrentWeather(weather) {
-   const currentWeatherEl = document.querySelector('.weather-current');
+   const currentWeatherEl = document.getElementById('currentWeather');
    const country = weather.sys.country;
    const city = weather.name;
-   const temp = Math.round(weather.main.temp);
+   const temp = weather.main;
+   const icon = () => {
+      return Icons()[weather.weather[0].main.toLowerCase()];
+   };
    const description = () => {
       let desc = weather.weather[0].description;
       desc = `${desc.charAt(0).toUpperCase()}${desc.slice(1)}`;
 
       return desc;
    };
-   const icon = () => Icons()[weather.weather[0].main.toLowerCase()];
    const time = () => {
       let time = new Date(weather.dt * 1000);
       const day = time.toLocaleDateString(time, { weekday: 'short' });
       const month = time.toLocaleDateString(time, { month: 'short' });
       const date = time.getDate();
-      const year = time.getFullYear();
-      const hour = time.toLocaleTimeString(time);
 
-      time = `${day} ${month} ${date} ${year} ${hour}`;
+      time = `${day} ${month} ${date}`;
 
       return time;
    };
 
+   currentWeatherEl.innerHTML = '';
+
    currentWeatherEl.innerHTML = `
       <div class="time">
-         <h2>${country}, ${city}</h2>
-         <p>${time()}</p>
+         <h2 class="location">${city}, ${country}</h2>
+         <p class="date">${time()}</p>
       </div>
       <div class="status">
          <div class="icon">
-            <p><i class="wi wi-${icon()}"></i></p>
-            <p>${description()}</p>
+            <p>
+               <i class="wi wi-${icon()}"></i>
+               <span>${description()}</span>
+            </p>
          </div>
-         <h1 class="units">${temp}<sup>o</sup></h1>
+         <div class="units">
+            <h1>${Math.round(temp.temp)}<sup>o</sup></h1>
+         </div>
       </div>
    `;
 
-   eventProbability(temp);
+   eventStatus(city, Math.round(temp.temp));
+
+   setAverageWeather(temp);
 }
 
-function eventProbability(temp) {
-   const probabilityEl = document.querySelector('.event_probability');
-   let probability;
+function eventStatus(city, temp) {
+   const statusEl = document.getElementById('eventStatus');
+   let status;
 
-   if (temp > 15 && temp < 25) {
-      probability = 'EVENT POSSIBLE';
-      probabilityEl.classList.add('safe');
+   if (temp >= 15 && temp <= 25) {
+      status = 'EVENT POSSIBLE';
+      statusEl.classList.add('safe');
    } else {
-      probability = 'EVENT NOT POSSIBLE';
-      probabilityEl.classList.remove('safe');
+      status = 'EVENT NOT POSSIBLE';
+      statusEl.classList.remove('safe');
    }
 
-   probabilityEl.innerHTML = `
-      <p>${probability}</p>
-   `;
+   if (city === 'New York') {
+      statusEl.innerHTML = `
+         <p>${status}</p>
+      `;
+   }
+}
+
+function setAverageWeather(temp) {
+   const averageWeatherEl = document.getElementById('averageWeather');
+   const averages = ['Min', 'Max'];
+
+   averageWeatherEl.innerHTML = '';
+
+   averages.forEach((av) => {
+      averageWeatherEl.innerHTML += `
+         <div class="chip">
+            <span class="title">${av}</span>
+            <span class="units">
+               ${Math.round(temp.temp_min)}<sup>o</sup>C
+            </span>
+         </div>
+      `;
+   });
+}
+
+export function setHourlyWeather(weather) {
+   const hourlyWeatherEl = document.getElementById('hourlyWeather');
+   const temp = weather.temp;
+   const timesOfDay = [
+      { name: 'Moring', key: 'morn' },
+      { name: 'Afternoon', key: 'day' },
+      { name: 'Evening', key: 'eve' },
+      { name: 'Night', key: 'night' },
+   ];
+
+   hourlyWeatherEl.innerHTML = '';
+
+   timesOfDay.forEach((time) => {
+      hourlyWeatherEl.innerHTML += `
+         <div class="chip">
+            <div class="chip-head">
+               <p>${time.name}</p>
+            </div>
+            <div class="chip-body">
+               <p class="units">
+                  ${Math.round(temp[time.key])}<sup>o</sup>C
+               </p>
+            </div>
+         </div>
+      `;
+   });
 }
 
 export function setDailyWeather(weather) {
-   const weeklyWeatherEl = document.querySelector('.weather-weekly');
-
+   const dailyWeatherEl = document.querySelector('#dailyWeather table tbody');
    const days = () => {
       const baseDate = new Date('8/31/2020');
-      const weekDays = [];
+      const weekDays = ['Today'];
 
       for (let i = 0; i < 7; i++) {
          weekDays.push(
@@ -106,7 +161,20 @@ export function setDailyWeather(weather) {
       return weekDays;
    };
 
+   dailyWeatherEl.innerHTML = '';
+
    weather.forEach((day, index) => {
+      const humidity = day.humidity;
+      const description = () => {
+         let desc = day.weather[0].description;
+         desc = `${desc.charAt(0).toUpperCase()}${desc.slice(1)}`;
+
+         return desc;
+      };
+      const wind = Math.round(day.wind_speed);
+      const icon = () => {
+         return Icons()[day.weather[0].main.toLowerCase()];
+      };
       const temp = () => {
          const temp = day.temp;
 
@@ -115,23 +183,18 @@ export function setDailyWeather(weather) {
             min: Math.round(temp.min),
          };
       };
-      const icon = () => Icons()[day.weather[0].main.toLowerCase()];
 
-      weeklyWeatherEl.innerHTML += `
-         <div class="card">
-            <div class="card-head">
-               <p>${days()[index]}</p>
-            </div>
-            <div class="card-body">
-               <i class="wi wi-${icon()}"></i>
-            </div>
-            <div class="card-footer">
-               <p class="units">
-                  <span class="max">${temp().max}<sup>o</sup></span>
-                  <span class="min">${temp().min}<sup>o</sup></span>
-               </p>
-            </div>
-         </div>
+      dailyWeatherEl.innerHTML += `
+         <tr>
+            <td>${days()[index]}</td>
+            <td>${humidity}%</td>
+            <td><i class="wi wi-${icon()}"></i>&nbsp;${description()}</td>
+            <td>
+               <span>${temp().max}<sup>o</sup>C</span>
+               <span>${temp().min}<sup>o</sup>C</span>
+            </td>
+            <td>${wind}m/s</td>
+         </tr>
       `;
    });
 }

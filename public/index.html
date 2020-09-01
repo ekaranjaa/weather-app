@@ -21,69 +21,77 @@
 
 <body>
     <div class="container">
-        <div class="home">
-            <nav class="navbar">
-                <div class="logo"><a href="/">Smash It</a></div>
-                <button class="menu-toggle"><i class="fas fa-bars"></i></button>
-            </nav>
-            <div class="weather">
-                <div class="event_probability"></div>
-                <main class="weather-current"></main>
-                <section class="weather-weekly"></section>
-                <section class="weather-recent">
-                    <h3>Your recent searches</h3>
-                    <div class="results">
-                        <div class="card">
-                            <div class="card-head">
-                                <p>Nairobi</p>
-                            </div>
-                            <div class="card-body">
-                                <i class="wi wi-day-sprinkle"></i>
-                            </div>
-                            <div class="card-footer">
-                                <p class="units">20<sup>o</sup></p>
-                            </div>
+        <nav class="navbar">
+            <div class="logo"><a href="/">Smash It</a></div>
+            <div class="search-field">
+                <i class="fas fa-search-location icon"></i>
+                <input type="search" name="query" id="search" class="input" placeholder="Type in your location">
+            </div>
+        </nav>
+        <div class="weather">
+            <article class="breakdown">
+                <main class="breakdown-current">
+                    <div id="eventStatus" class="event_status">
+                        <button id="loadEventInfo" class="btn">LOAD EVENT INFORMATION</button>
+                    </div>
+                    <section id="currentWeather" class="current"></section>
+                    <section id="hourlyWeather" class="hourly"></section>
+                    <section id="averageWeather" class="average"></section>
+                </main>
+                <section id="dailyWeather" class="breakdown-daily">
+                    <table>
+                        <thead>
+                            <th>Day</th>
+                            <th>Humidity</th>
+                            <th>Weather</th>
+                            <th>Temperature</th>
+                            <th>Wind</th>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </section>
+            </article>
+            <article id="savedLocations" class="weather-saved">
+                <h3>Saved locations</h3>
+                <div class="content">
+                    <div class="card">
+                        <div class="card-head">
+                            <p>Nairobi</p>
                         </div>
-                        <div class="card">
-                            <div class="card-head">
-                                <p>Mombasa</p>
-                            </div>
-                            <div class="card-body">
-                                <i class="wi wi-day-sleet-storm"></i>
-                            </div>
-                            <div class="card-footer">
-                                <p class="units">20<sup>o</sup></p>
-                            </div>
+                        <div class="card-body">
+                            <i class="wi wi-day-sprinkle"></i>
                         </div>
-                        <div class="card">
-                            <div class="card-head">
-                                <p>Kisumu</p>
-                            </div>
-                            <div class="card-body">
-                                <i class="wi wi-day-windy"></i>
-                            </div>
-                            <div class="card-footer">
-                                <p class="units">20<sup>o</sup></p>
-                            </div>
+                        <div class="card-footer">
+                            <span>20<sup>o</sup></span>
+                            <span>20<sup>o</sup></span>
                         </div>
                     </div>
-                </section>
-            </div>
-        </div>
-        <div class="search">
-            <div class="search-head">
-                <div class="search-field">
-                    <i class="fas fa-search-location icon"></i>
-                    <input type="search" name="query" id="search" class="input" placeholder="Type in your location">
+                    <div class="card">
+                        <div class="card-head">
+                            <p>Mombasa</p>
+                        </div>
+                        <div class="card-body">
+                            <i class="wi wi-day-sleet-storm"></i>
+                        </div>
+                        <div class="card-footer">
+                            <span>20<sup>o</sup></span>
+                            <span>20<sup>o</sup></span>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-head">
+                            <p>Kisumu</p>
+                        </div>
+                        <div class="card-body">
+                            <i class="wi wi-day-windy"></i>
+                        </div>
+                        <div class="card-footer">
+                            <span>20<sup>o</sup></span>
+                            <span>20<sup>o</sup></span>
+                        </div>
+                    </div>
                 </div>
-                <button class="menu-close"><i class="fas fa-times"></i></button>
-            </div>
-            <div class="recent">
-                <p><i class="fas fa-history icon"></i>Nairobi<i class="fas fa-times icon"></i></p>
-                <p><i class="fas fa-history icon"></i>Mombasa<i class="fas fa-times icon"></i></p>
-                <p><i class="fas fa-history icon"></i>Kisumu<i class="fas fa-times icon"></i></p>
-            </div>
-            <div class="results"></div>
+            </article>
         </div>
     </div>
 

@@ -1,8 +1,8 @@
 export default function Icons() {
    let icons;
-   const time = new Date().getHours();
+   const hours = new Date().getHours();
 
-   if (time >= 18) {
+   if (hours > 18) {
       icons = {
          thunderstorm: 'night-alt-thunderstorm',
          drizzle: 'night-alt-showers',
