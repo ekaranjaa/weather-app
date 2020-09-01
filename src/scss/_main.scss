@@ -64,14 +64,18 @@ body {
 .weather {
    padding: 30px 20px;
 
-   .probability {
+   .event_probability {
       margin-bottom: 20px;
       padding: 5px;
       display: inline-block;
       font-size: 0.8rem;
       font-weight: bold;
-      background: red;
+      background: $danger;
       border-radius: 2px;
+
+      &.safe {
+         background: $safe;
+      }
    }
 
    .card {
@@ -109,6 +113,11 @@ body {
 
    .status .icon {
       margin-right: 10px;
+      text-align: center;
+
+      p:last-child {
+         font-size: 1rem;
+      }
    }
 
    .time {
@@ -123,6 +132,7 @@ body {
 
 .weather-weekly {
    margin: 30px 0 60px 0;
+   padding: 10px 0;
    display: flex;
    align-items: center;
    overflow-y: hidden;
@@ -135,6 +145,7 @@ body {
    }
 
    .results {
+      padding: 10px 0;
       display: flex;
       align-items: center;
       overflow-y: hidden;
@@ -173,7 +184,7 @@ body {
       align-items: center;
       width: 100%;
       border-radius: 5px;
-      background: transparentize($primary, 0.6);
+      background: transparentize($primary, 0.5);
       overflow: hidden;
 
       .icon {
@@ -231,10 +242,26 @@ body {
 
    .container {
       display: grid;
-      grid-template-columns: auto 400px;
+      grid-template-columns: auto minmax(200px, 400px);
 
       &.block {
          grid-template-columns: auto 0;
+      }
+   }
+
+   .weather * {
+      &::-webkit-scrollbar {
+         height: 5px;
+         background: none;
+      }
+
+      &::-webkit-scrollbar-thumb {
+         border-radius: 25px;
+         background: $primary;
+      }
+
+      &::-webkit-scrollbar-button {
+         display: none;
       }
    }
 
