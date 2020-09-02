@@ -8,7 +8,7 @@ import * as UI from './modules/ui.js';
 
 /**
  * We load the document background once everything else is
- * loaded to minimize load time
+ * loaded to minimize load time.
  */
 document.addEventListener('DOMContentLoaded', () => UI.loadBg());
 
@@ -23,13 +23,13 @@ navigator.geolocation.getCurrentPosition((position) => {
 /**
  * We initiate the loadEventInfo event and pass getWeatherInfoByCity
  * method which gets the event information once the button associated
- * with it is clicked
+ * with it is clicked.
  */
 UI.loadEventInfo(getWeatherInfoByCity);
 
 /**
  * We initiate the search event and pass searchLocation method
- * which handles the search query once the form is submitted
+ * which handles the search query once the form is submitted.
  */
 UI.search(searchLocation);
 
@@ -38,7 +38,10 @@ UI.search(searchLocation);
  * loading weather data initially.
  *
  * We use it to load search and saved location
- * data as well
+ * data as well.
+ *
+ * The methods referenced here fetch the current,
+ * hourly and daily weather respectively.
  *
  * @param lat
  * @param long
@@ -49,21 +52,18 @@ function getWeatherInfo(lat, long) {
    const req = new HTTP();
    const apiKey = process.env.API_KEY;
 
-   // This method gets current weather with location information
    req.get(
       `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${long}&units=metric&appid=${apiKey}`
    )
       .then((res) => UI.setCurrentWeather(res))
       .catch((err) => console.log(err));
 
-   // This method gets current weather only for the Hourly data
    req.get(
       `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${long}&units=metric&appid=${apiKey}`
    )
       .then((res) => UI.setHourlyWeather(res.daily[0]))
       .catch((err) => console.log(err));
 
-   // This method gets daily weather updates
    req.get(
       `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${long}&units=metric&appid=${apiKey}`
    )
@@ -72,7 +72,11 @@ function getWeatherInfo(lat, long) {
 }
 
 /**
- * We use this method to get weather information by city name
+ * We use this method to get weather information by city name.
+ *
+ * The methods referenced here get the weather info that matches the
+ * `cityName` provided then pass the response all the way down to
+ * the necessary UI elements.
  *
  * @param cityName
  */
@@ -82,10 +86,6 @@ function getWeatherInfoByCity(cityName) {
    const req = new HTTP();
    const apiKey = process.env.API_KEY;
 
-   /**
-    * We get the weather info that matches the `cityName` provided then pass the
-    * response all the way down to the necessary UI elements
-    */
    req.get(
       `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&units=metric&appid=${apiKey}`
    )
