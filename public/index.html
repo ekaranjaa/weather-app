@@ -23,9 +23,15 @@
     <div class="container">
         <nav class="navbar">
             <div class="logo"><a href="/">Smash It</a></div>
-            <div class="search-field">
-                <i class="fas fa-search-location icon"></i>
-                <input type="search" name="query" id="search" class="input" placeholder="Type in your location">
+            <div class="search">
+                <div class="search-field">
+                    <i class="fas fa-search-location icon"></i>
+                    <form id="searchForm" class="search-form">
+                        <input type="search" name="query" id="searchInput" class="search-input" autocomplete="off"
+                            placeholder="Type in your location">
+                    </form>
+                </div>
+                <div id="searchResults" class="search-results"></div>
             </div>
         </nav>
         <div class="weather">

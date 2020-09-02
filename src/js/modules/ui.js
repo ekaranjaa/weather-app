@@ -9,9 +9,7 @@ export function loading() {
    const hourlyWeatherEl = document.getElementById('hourlyWeather');
    const dailyWeatherEl = document.querySelector('#dailyWeather table tbody');
 
-   currentWeatherEl.innerHTML = `
-      <div class="spinner"></div>
-   `;
+   currentWeatherEl.innerHTML = ``;
 
    hourlyWeatherEl.innerHTML = `
       <div class="spinner"></div>
@@ -27,6 +25,14 @@ export function loading() {
          <td></td>
          <td></td>
       </tr>
+   `;
+}
+
+export function searching() {
+   const searchResultsEl = document.getElementById('searchResults');
+
+   searchResultsEl.innerHTML = `
+      <div class="spinner"></div>
    `;
 }
 
@@ -75,12 +81,19 @@ export function setCurrentWeather(weather) {
       </div>
    `;
 
-   eventStatus(city, Math.round(temp.temp));
-
+   setEventStatus(city, Math.round(temp.temp));
    setAverageWeather(temp);
 }
 
-function eventStatus(city, temp) {
+export function loadEventInfo(action) {
+   const loadEventInfoEl = document.getElementById('loadEventInfo');
+
+   loadEventInfoEl.onclick = () => {
+      action('New York');
+   };
+}
+
+function setEventStatus(city, temp) {
    const statusEl = document.getElementById('eventStatus');
    let status;
 
@@ -101,16 +114,19 @@ function eventStatus(city, temp) {
 
 function setAverageWeather(temp) {
    const averageWeatherEl = document.getElementById('averageWeather');
-   const averages = ['Min', 'Max'];
+   const averages = [
+      { name: 'Min', key: 'temp_min' },
+      { name: 'Max', key: 'temp_max' },
+   ];
 
    averageWeatherEl.innerHTML = '';
 
    averages.forEach((av) => {
       averageWeatherEl.innerHTML += `
          <div class="chip">
-            <span class="title">${av}</span>
+            <span class="title">${av.name}</span>
             <span class="units">
-               ${Math.round(temp.temp_min)}<sup>o</sup>C
+               ${Math.round(temp[av.key])}<sup>o</sup>C
             </span>
          </div>
       `;
@@ -196,5 +212,110 @@ export function setDailyWeather(weather) {
             <td>${wind}m/s</td>
          </tr>
       `;
+   });
+}
+
+export function search(action) {
+   const searchFormEl = document.getElementById('searchForm');
+   const query = document.getElementById('searchInput');
+
+   searchFormEl.onsubmit = (e) => {
+      e.preventDefault();
+      action(query.value);
+   };
+}
+
+export function setSearchResults(weather, action) {
+   const searchResultsEl = document.getElementById('searchResults');
+
+   if (weather.cod == 404) {
+      let message = weather.message;
+      message = `${message.charAt(0).toUpperCase()}${message.slice(1)}`;
+
+      searchResultsEl.innerHTML = `
+        <p class="error">${message}</p>
+      `;
+
+      return;
+   }
+
+   const country = weather.sys.country;
+   const city = weather.name;
+   const coord = weather.coord;
+   const temp = weather.main;
+   const wind = Math.round(weather.wind.speed);
+   const icon = () => {
+      return Icons()[weather.weather[0].main.toLowerCase()];
+   };
+   const description = () => {
+      let desc = weather.weather[0].description;
+      desc = `${desc.charAt(0).toUpperCase()}${desc.slice(1)}`;
+
+      return desc;
+   };
+
+   searchResultsEl.innerHTML = '';
+
+   searchResultsEl.innerHTML = `
+      <div class="card" data-lat="${coord.lat}" data-lon="${coord.lon}">
+         <div class="card-head">
+            <i class="wi wi-${icon()}"></i>
+         </div>
+         <div class="card-body">
+            <p>
+               <strong>${city}, ${country}</strong> 
+               [${coord.lon}, ${coord.lat}], 
+               <i>${description()}</i>
+            </p>
+            <p class="summary">
+                  <span class="main">
+                     ${Math.round(temp.temp)}<sup>o</sup>C
+                  </span>
+                  temp from
+                  <span>
+                     ${Math.round(temp.temp_min)}<sup>o</sup>C
+                  </span>
+                  to
+                  <span>
+                     ${Math.round(temp.temp_max)}<sup>o</sup>C
+                  </span>,
+                  wind 
+                  <span>
+                     ${wind}
+                  </span>
+            </p>
+         </div>
+      </div>
+   `;
+
+   loadSearchResults(action);
+}
+
+function loadSearchResults(action) {
+   const resultCardEls = document.querySelectorAll('#searchResults .card');
+
+   resultCardEls.forEach((card) => {
+      card.onmouseover = () => {
+         card.parentElement.classList.add('active');
+      };
+
+      card.onmouseout = () => {
+         setTimeout(() => {
+            card.parentElement.classList.remove('active');
+         }, 1000);
+      };
+
+      card.onclick = () => {
+         const query = document.getElementById('searchInput');
+         query.value = '';
+
+         const lat = card.getAttribute('data-lat');
+         const long = card.getAttribute('data-lon');
+
+         action(lat, long);
+
+         card.parentElement.classList.remove('active');
+         card.parentElement.innerHTML = '';
+      };
    });
 }
