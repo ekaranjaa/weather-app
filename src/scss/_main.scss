@@ -324,6 +324,19 @@ body {
 
    table {
       width: 100%;
+
+      .status {
+         margin-right: 5px;
+         height: 10px;
+         width: 10px;
+         display: inline-block;
+         border-radius: 50%;
+         background: var(--danger);
+
+         &.safe {
+            background: var(--safe);
+         }
+      }
    }
 
    th,

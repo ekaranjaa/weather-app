@@ -56,7 +56,7 @@ export function setCurrentWeather(weather) {
       const month = time.toLocaleDateString(time, { month: 'short' });
       const date = time.getDate();
 
-      time = `${day} ${month} ${date}`;
+      time = `${day}, ${month} ${date}`;
 
       return time;
    };
@@ -81,7 +81,7 @@ export function setCurrentWeather(weather) {
       </div>
    `;
 
-   setEventStatus(city, Math.round(temp.temp));
+   setEventStatus(Math.round(temp.temp));
    setAverageWeather(temp);
 }
 
@@ -93,11 +93,11 @@ export function loadEventInfo(action) {
    };
 }
 
-function setEventStatus(city, temp) {
+function setEventStatus(temp) {
    const statusEl = document.getElementById('eventStatus');
    let status;
 
-   if (temp >= 15 && temp <= 25) {
+   if (temp >= 15 && temp <= 30) {
       status = 'EVENT POSSIBLE';
       statusEl.classList.add('safe');
    } else {
@@ -105,11 +105,9 @@ function setEventStatus(city, temp) {
       statusEl.classList.remove('safe');
    }
 
-   if (city === 'New York') {
-      statusEl.innerHTML = `
-         <p>${status}</p>
-      `;
-   }
+   statusEl.innerHTML = `
+      <p>${status}</p>
+   `;
 }
 
 function setAverageWeather(temp) {
@@ -165,13 +163,17 @@ export function setDailyWeather(weather) {
    const dailyWeatherEl = document.querySelector('#dailyWeather table tbody');
    const days = () => {
       const baseDate = new Date('8/31/2020');
+      const currentDate = new Date();
       const weekDays = ['Today'];
 
       for (let i = 0; i < 7; i++) {
-         weekDays.push(
-            baseDate.toLocaleDateString(baseDate, { weekday: 'long' })
-         );
+         weekDays.push(`
+            ${baseDate.toLocaleDateString(baseDate, { weekday: 'short' })},
+            ${currentDate.toLocaleDateString(currentDate, { month: 'short' })}
+            ${currentDate.getDate()}
+         `);
          baseDate.setDate(baseDate.getDate() + 1);
+         currentDate.setDate(currentDate.getDate() + 1);
       }
 
       return weekDays;
@@ -199,10 +201,16 @@ export function setDailyWeather(weather) {
             min: Math.round(temp.min),
          };
       };
+      const tempAv = (temp().max + temp().min) / 2;
 
       dailyWeatherEl.innerHTML += `
          <tr>
-            <td>${days()[index]}</td>
+            <td>
+               <span class="status ${
+                  tempAv >= 15 && tempAv <= 30 && 'safe'
+               }"></span>
+               ${days()[index]}
+            </td>
             <td>${humidity}%</td>
             <td><i class="wi wi-${icon()}"></i>&nbsp;${description()}</td>
             <td>
@@ -297,12 +305,6 @@ function loadSearchResults(action) {
    resultCardEls.forEach((card) => {
       card.onmouseover = () => {
          card.parentElement.classList.add('active');
-      };
-
-      card.onmouseout = () => {
-         setTimeout(() => {
-            card.parentElement.classList.remove('active');
-         }, 1000);
       };
 
       card.onclick = () => {
