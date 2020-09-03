@@ -1,15 +1,17 @@
-class HTTP {
-   constructor() {
-      this.response;
-      this.data;
+export default class HTTP {
+   static async checkOnlineStatus() {
+      try {
+         const online = await fetch('/screenshot.png');
+         return online.status >= 200 && online.status < 300;
+      } catch (err) {
+         return false;
+      }
    }
 
    async get(url) {
-      this.response = fetch(url);
-      this.data = await (await this.response).json();
+      const response = await fetch(url);
+      const data = await response.json();
 
-      return this.data;
+      return data;
    }
 }
-
-export default HTTP;
