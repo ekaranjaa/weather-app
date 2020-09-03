@@ -1,7 +1,7 @@
 export default class HTTP {
    static async checkOnlineStatus() {
       try {
-         const online = await fetch('/screenshot.png');
+         const online = await fetch('https://api.github.com/users/ekaranjaa');
          return online.status >= 200 && online.status < 300;
       } catch (err) {
          return false;

@@ -129,7 +129,7 @@ export default class UI {
                </p>
             </div>
             <div class="units">
-               <h1>${temp}<sup>o</sup></h1>
+               <h1>${temp}<sup>o</sup>C</h1>
             </div>
          </div>
       `;
@@ -266,7 +266,7 @@ export default class UI {
          };
          const tempAv = () => {
             if (this.currentWeather.name !== 'New York') return;
-            return (temp().max + temp().min) / 2;
+            return Math.round(this.currentWeather.main.feels_like);
          };
 
          dailyWeatherEl.innerHTML += `
@@ -326,7 +326,18 @@ export default class UI {
          message = `${message.charAt(0).toUpperCase()}${message.slice(1)}`;
 
          searchResultsEl.innerHTML = `
-         <p class="error">${message}</p>
+            <p class="error">${message}</p>
+         `;
+
+         return;
+      }
+
+      if (weather.cod == 503) {
+         let message = weather.message;
+         message = `${message.charAt(0).toUpperCase()}${message.slice(1)}`;
+
+         searchResultsEl.innerHTML = `
+            <p class="error">${message}</p>
          `;
 
          return;

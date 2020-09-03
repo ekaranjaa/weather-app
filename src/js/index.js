@@ -13,7 +13,7 @@ import Store from './modules/store.js';
  */
 document.addEventListener('DOMContentLoaded', () => UI.loadBg());
 
-// Perform all API actions here then pass the response the UI
+// Get the weather from the user's location
 navigator.geolocation.getCurrentPosition((position) => {
    const lat = position.coords.latitude;
    const lon = position.coords.longitude;
@@ -58,41 +58,43 @@ function getWeatherInfo(lat, lon) {
    const req = new HTTP();
    const apiKey = process.env.API_KEY;
 
-   if (HTTP.checkOnlineStatus()) {
-      UII.updateOnlineStatus('online');
+   HTTP.checkOnlineStatus().then((res) => {
+      if (res) {
+         UII.updateOnlineStatus('online');
 
-      req.get(
-         `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}`
-      )
-         .then((res) => {
-            UII.setCurrentWeather(res);
-            Store.saveWeather('current', res);
-         })
-         .catch((err) => console.log(err));
+         req.get(
+            `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}`
+         )
+            .then((res) => {
+               UII.setCurrentWeather(res);
+               Store.saveWeather('current', res);
+            })
+            .catch((err) => console.log(err));
 
-      req.get(
-         `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}`
-      )
-         .then((res) => {
-            UII.setHourlyWeather(res.daily[0]);
-            Store.saveWeather('hourly', res.daily[0]);
-         })
-         .catch((err) => console.log(err));
+         req.get(
+            `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}`
+         )
+            .then((res) => {
+               UII.setHourlyWeather(res.daily[0]);
+               Store.saveWeather('hourly', res.daily[0]);
+            })
+            .catch((err) => console.log(err));
 
-      req.get(
-         `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}`
-      )
-         .then((res) => {
-            UII.setDailyWeather(res.daily);
-            Store.saveWeather('daily', res.daily);
-         })
-         .catch((err) => console.log(err));
-   } else {
-      UII.updateOnlineStatus('offline');
-      UII.setCurrentWeather(Store.getWeather('current'));
-      UII.setHourlyWeather(Store.getWeather('hourly'));
-      UII.setDailyWeather(Store.getWeather('daily'));
-   }
+         req.get(
+            `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}`
+         )
+            .then((res) => {
+               UII.setDailyWeather(res.daily);
+               Store.saveWeather('daily', res.daily);
+            })
+            .catch((err) => console.log(err));
+      } else {
+         UII.updateOnlineStatus('offline');
+         UII.setCurrentWeather(Store.getWeather('current'));
+         UII.setHourlyWeather(Store.getWeather('hourly'));
+         UII.setDailyWeather(Store.getWeather('daily'));
+      }
+   });
 }
 
 /**
@@ -124,34 +126,45 @@ function getWeatherInfoByCity(cityName) {
    const req = new HTTP();
    const apiKey = process.env.API_KEY;
 
-   req.get(
-      `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&units=metric&appid=${apiKey}`
-   )
-      .then((res) => {
-         UII.setCurrentWeather(res);
-
-         const lat = res.coord.lat;
-         const lon = res.coord.lon;
+   HTTP.checkOnlineStatus().then((res) => {
+      if (res) {
+         UII.updateOnlineStatus('online');
 
          req.get(
-            `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}`
+            `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&units=metric&appid=${apiKey}`
          )
             .then((res) => {
-               UII.setHourlyWeather(res.daily[0]);
-               Store.saveWeather('hourly', res.daily[0]);
-            })
-            .catch((err) => console.log(err));
+               UII.setCurrentWeather(res);
 
-         req.get(
-            `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}`
-         )
-            .then((res) => {
-               UII.setDailyWeather(res.daily);
-               Store.saveWeather('daily', res.daily);
+               const lat = res.coord.lat;
+               const lon = res.coord.lon;
+
+               req.get(
+                  `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}`
+               )
+                  .then((res) => {
+                     UII.setHourlyWeather(res.daily[0]);
+                     Store.saveWeather('hourly', res.daily[0]);
+                  })
+                  .catch((err) => console.log(err));
+
+               req.get(
+                  `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}`
+               )
+                  .then((res) => {
+                     UII.setDailyWeather(res.daily);
+                     Store.saveWeather('daily', res.daily);
+                  })
+                  .catch((err) => console.log(err));
             })
             .catch((err) => console.log(err));
-      })
-      .catch((err) => console.log(err));
+      } else {
+         UII.updateOnlineStatus('offline');
+         UII.setCurrentWeather(Store.getWeather('current'));
+         UII.setHourlyWeather(Store.getWeather('hourly'));
+         UII.setDailyWeather(Store.getWeather('daily'));
+      }
+   });
 }
 
 /**
@@ -166,19 +179,27 @@ function searchLocation(query) {
    const req = new HTTP();
    const apiKey = process.env.API_KEY;
 
-   req.get(
-      `https://api.openweathermap.org/data/2.5/weather?q=${query}&units=metric&appid=${apiKey}`
-   )
-      .then((res) => UII.setSearchResults(res, getWeatherInfo))
-      .catch((err) => console.log(err));
+   HTTP.checkOnlineStatus().then((res) => {
+      if (res) {
+         req.get(
+            `https://api.openweathermap.org/data/2.5/weather?q=${query}&units=metric&appid=${apiKey}`
+         )
+            .then((res) => UII.setSearchResults(res, getWeatherInfo))
+            .catch((err) => console.log(err));
+      } else {
+         const errorRes = {
+            cod: 503,
+            message: "looks like you're offline.",
+         };
+         UII.setSearchResults(errorRes, getWeatherInfo);
+      }
+   });
 }
 
 // Register the service worker
 if ('serviceWorker' in navigator) {
-   window.onload = () => {
-      navigator.serviceWorker
-         .register('/sw.js')
-         .then((reg) => console.log('SW registered'))
-         .catch((err) => console.log('SW registration failed'));
-   };
+   navigator.serviceWorker
+      .register('/sw.js')
+      .then((reg) => console.log('SW registered'))
+      .catch((err) => console.log('SW registration failed'));
 }

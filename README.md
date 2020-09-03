@@ -1,3 +1,3 @@
 # Weather App
 
-![Screenshot](./public/screenshot.png)
+![Screenshot](./src/screenshot.png)

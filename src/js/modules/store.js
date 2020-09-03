@@ -14,10 +14,4 @@ export default class Store {
    static saveWeather(type, data) {
       localStorage.setItem(type, JSON.stringify(data));
    }
-
-   static deleteWeather(country) {
-      let weather = Store.getWeather();
-      weather = weather.filter((item) => item.name !== country);
-      localStorage.setItem('weather', JSON.stringify(weather));
-   }
 }
