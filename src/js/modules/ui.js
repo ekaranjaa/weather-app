@@ -225,17 +225,17 @@ export default class UI {
          '#dailyWeather table tbody'
       );
       const days = () => {
-         const baseDate = new Date('8/31/2020');
          const currentDate = new Date();
-         const weekDays = ['Today'];
+         const weekDays = [];
 
-         for (let i = 0; i < 7; i++) {
+         for (let i = 0; i < 8; i++) {
             weekDays.push(`
-            ${baseDate.toLocaleDateString(baseDate, { weekday: 'short' })},
+            ${currentDate.toLocaleDateString(currentDate, {
+               weekday: 'short',
+            })},
             ${currentDate.toLocaleDateString(currentDate, { month: 'short' })}
             ${currentDate.getDate()}
          `);
-            baseDate.setDate(baseDate.getDate() + 1);
             currentDate.setDate(currentDate.getDate() + 1);
          }
 
@@ -383,9 +383,9 @@ export default class UI {
                      <span>
                         ${Math.round(temp.temp_max)}<sup>o</sup>C
                      </span>,
-                     wind 
+                     wind speed
                      <span>
-                        ${wind}
+                        ${wind}m/s
                      </span>
                </p>
             </div>

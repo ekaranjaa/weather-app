@@ -1,5 +1,5 @@
-const staticCacheName = 'static_i';
-const dynamicCacheName = 'dynamic_i';
+const staticCacheName = 'static_iv';
+const dynamicCacheName = 'dynamic_iv';
 const assets = [
    '/',
    '/favicon.ico',
@@ -13,6 +13,7 @@ const assets = [
    '/vendor/font/weathericons-regular-webfont.woff',
    '/vendor/font/weathericons-regular-webfont.woff2',
 ];
+const ignoreResources = ['/users/', '/data/'];
 
 self.addEventListener('install', (e) => {
    e.waitUntil(
@@ -35,7 +36,13 @@ self.addEventListener('activate', (e) => {
 });
 
 self.addEventListener('fetch', (e) => {
-   if (!(e.request.url.indexOf('http') === 0)) return;
+   if (!(e.request.url.indexOf('http') === 0) || e.request.method !== 'GET') {
+      return;
+   }
+
+   ignoreResources.forEach((resource) => {
+      if (e.request.url.indexOf(resource) !== -1) return;
+   });
 
    e.respondWith(
       caches.match(e.request).then((cacheRes) => {

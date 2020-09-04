@@ -135,6 +135,7 @@ function getWeatherInfoByCity(cityName) {
          )
             .then((res) => {
                UII.setCurrentWeather(res);
+               Store.saveWeather('current', res);
 
                const lat = res.coord.lat;
                const lon = res.coord.lon;
