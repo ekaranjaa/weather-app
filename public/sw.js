@@ -1,5 +1,5 @@
-const staticCacheName = 'static_iv';
-const dynamicCacheName = 'dynamic_iv';
+const staticCache = 'static_i';
+const dynamicCache = 'dynamic_i';
 const assets = [
    '/',
    '/favicon.ico',
@@ -13,11 +13,19 @@ const assets = [
    '/vendor/font/weathericons-regular-webfont.woff',
    '/vendor/font/weathericons-regular-webfont.woff2',
 ];
-const ignoreResources = ['/users/', '/data/'];
+const limitCacheSize = (name, size) => {
+   caches.open(name).then((cache) => {
+      cache.keys().then((keys) => {
+         if (keys.length > size) {
+            cache.delete(keys[0]).then(limitCacheSize(name, size));
+         }
+      });
+   });
+};
 
 self.addEventListener('install', (e) => {
    e.waitUntil(
-      caches.open(staticCacheName).then((cache) => {
+      caches.open(staticCache).then((cache) => {
          cache.addAll(assets);
       })
    );
@@ -28,7 +36,7 @@ self.addEventListener('activate', (e) => {
       caches.keys().then((keys) => {
          Promise.all(
             keys
-               .filter((key) => key !== staticCacheName)
+               .filter((key) => key !== staticCache)
                .map((key) => caches.delete(key))
          );
       })
@@ -40,17 +48,14 @@ self.addEventListener('fetch', (e) => {
       return;
    }
 
-   ignoreResources.forEach((resource) => {
-      if (e.request.url.indexOf(resource) !== -1) return;
-   });
-
    e.respondWith(
       caches.match(e.request).then((cacheRes) => {
          return (
             cacheRes ||
             fetch(e.request).then(async (fetchRes) => {
-               return await caches.open(dynamicCacheName).then((cache) => {
+               return await caches.open(dynamicCache).then((cache) => {
                   cache.put(e.request.url, fetchRes.clone());
+                  limitCacheSize(dynamicCache, 20);
                   return fetchRes;
                });
             })

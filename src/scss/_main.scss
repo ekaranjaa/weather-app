@@ -318,8 +318,11 @@ body {
          border-radius: 50%;
          background: var(--danger);
 
-         &.safe {
+         &.active {
             display: inline-block;
+         }
+
+         &.safe {
             background: var(--safe);
          }
       }

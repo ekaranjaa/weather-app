@@ -57,13 +57,15 @@ function getWeatherInfo(lat, lon) {
    const UII = new UI();
    const req = new HTTP();
    const apiKey = process.env.API_KEY;
+   // We generate a random number on every request to avoid service worker caching
+   const random = Math.round(Math.random() * 999999);
 
    HTTP.checkOnlineStatus().then((res) => {
       if (res) {
          UII.updateOnlineStatus('online');
 
          req.get(
-            `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}`
+            `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}&rand=${random}`
          )
             .then((res) => {
                UII.setCurrentWeather(res);
@@ -72,7 +74,7 @@ function getWeatherInfo(lat, lon) {
             .catch((err) => console.log(err));
 
          req.get(
-            `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}`
+            `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}&rand=${random}`
          )
             .then((res) => {
                UII.setHourlyWeather(res.daily[0]);
@@ -81,7 +83,7 @@ function getWeatherInfo(lat, lon) {
             .catch((err) => console.log(err));
 
          req.get(
-            `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}`
+            `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}&rand=${random}`
          )
             .then((res) => {
                UII.setDailyWeather(res.daily);
@@ -125,13 +127,14 @@ function getWeatherInfoByCity(cityName) {
    const UII = new UI();
    const req = new HTTP();
    const apiKey = process.env.API_KEY;
+   const random = Math.round(Math.random() * 999999);
 
    HTTP.checkOnlineStatus().then((res) => {
       if (res) {
          UII.updateOnlineStatus('online');
 
          req.get(
-            `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&units=metric&appid=${apiKey}`
+            `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&units=metric&appid=${apiKey}&rand=${random}`
          )
             .then((res) => {
                UII.setCurrentWeather(res);
@@ -141,7 +144,7 @@ function getWeatherInfoByCity(cityName) {
                const lon = res.coord.lon;
 
                req.get(
-                  `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}`
+                  `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}&rand=${random}`
                )
                   .then((res) => {
                      UII.setHourlyWeather(res.daily[0]);
@@ -150,7 +153,7 @@ function getWeatherInfoByCity(cityName) {
                   .catch((err) => console.log(err));
 
                req.get(
-                  `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}`
+                  `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}&rand=${random}`
                )
                   .then((res) => {
                      UII.setDailyWeather(res.daily);
@@ -179,11 +182,12 @@ function searchLocation(query) {
    const UII = new UI();
    const req = new HTTP();
    const apiKey = process.env.API_KEY;
+   const random = Math.round(Math.random() * 999999);
 
    HTTP.checkOnlineStatus().then((res) => {
       if (res) {
          req.get(
-            `https://api.openweathermap.org/data/2.5/weather?q=${query}&units=metric&appid=${apiKey}`
+            `https://api.openweathermap.org/data/2.5/weather?q=${query}&units=metric&appid=${apiKey}&rand=${random}`
          )
             .then((res) => UII.setSearchResults(res, getWeatherInfo))
             .catch((err) => console.log(err));
@@ -202,5 +206,5 @@ if ('serviceWorker' in navigator) {
    navigator.serviceWorker
       .register('/sw.js')
       .then((reg) => console.log('SW registered'))
-      .catch((err) => console.log('SW registration failed'));
+      .catch((err) => console.log('SW registration failed', err));
 }

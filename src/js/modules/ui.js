@@ -264,17 +264,26 @@ export default class UI {
                min: Math.round(temp.min),
             };
          };
+         const city = this.currentWeather.name;
          const tempAv = () => {
-            if (this.currentWeather.name !== 'New York') return;
-            return Math.round(this.currentWeather.main.feels_like);
+            if (city !== 'New York') return;
+            return Math.round(
+               (day.feels_like.morn +
+                  day.feels_like.day +
+                  day.feels_like.eve +
+                  day.feels_like.night) /
+                  4
+            );
          };
 
          dailyWeatherEl.innerHTML += `
             <tr>
                <td>
-                  <span class="status ${
-                     tempAv() >= 15 && tempAv() <= 30 && 'safe'
-                  }"></span>
+                  <span class="status 
+                        ${city === 'New York' && 'active'}
+                        ${tempAv() >= 15 && tempAv() <= 30 && 'safe'}
+                     ">
+                  </span>
                   ${days()[index]}
                </td>
                <td>${humidity}%</td>
