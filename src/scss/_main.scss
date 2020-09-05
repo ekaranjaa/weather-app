@@ -340,6 +340,21 @@ body {
    }
 }
 
+.footer {
+   padding: 10px 20px;
+   text-align: center;
+
+   a {
+      color: var(--white);
+      text-decoration: none;
+      display: inline-block;
+
+      &:hover {
+         text-decoration: underline dotted;
+      }
+   }
+}
+
 @media screen and (min-width: $md) {
    body {
       *::-webkit-scrollbar {
@@ -383,5 +398,9 @@ body {
       &-daily {
          margin: 0;
       }
+   }
+
+   .footer {
+      padding: 20px 40px;
    }
 }
