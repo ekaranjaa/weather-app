@@ -60,7 +60,7 @@ export default class UI {
       if (status === 'offline') {
          onlineStatusEl.classList.add('active');
          onlineStatusEl.innerHTML = `
-            <p>The current information may be innacurate since you're offline.</p>
+            <p>Looks like you're offline. The current information may be innacurate.</p>
          `;
       } else {
          onlineStatusEl.classList.remove('active');
