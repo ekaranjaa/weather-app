@@ -15,10 +15,21 @@ document.addEventListener('DOMContentLoaded', () => UI.loadBg());
 
 // Get the weather from the user's location
 navigator.geolocation.getCurrentPosition((position) => {
-   const lat = position.coords.latitude;
-   const lon = position.coords.longitude;
+   window.onload = () => {
+      let lat;
+      let lon;
 
-   window.onload = () => getWeatherInfo(lat, lon);
+      if (Store.getWeather('current') === null) {
+         lat = position.coords.latitude;
+         lon = position.coords.longitude;
+      } else {
+         const target = Store.getWeather('current');
+         lat = target.coord.lat;
+         lon = target.coord.lon;
+      }
+
+      return getWeatherInfo(lat, lon);
+   };
 });
 
 (() => {
