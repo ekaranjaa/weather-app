@@ -14,6 +14,7 @@ export default class UI {
    static loading() {
       const currentWeatherEl = document.getElementById('currentWeather');
       const hourlyWeatherEl = document.getElementById('hourlyWeather');
+      const averageWeatherEl = document.getElementById('averageWeather');
       const dailyWeatherEl = document.querySelector(
          '#dailyWeather table tbody'
       );
@@ -23,6 +24,8 @@ export default class UI {
       hourlyWeatherEl.innerHTML = `
          <div class="spinner"></div>
       `;
+
+      averageWeatherEl.innerHTML = '';
 
       dailyWeatherEl.innerHTML = `
          <tr>
@@ -195,7 +198,7 @@ export default class UI {
       const hourlyWeatherEl = document.getElementById('hourlyWeather');
       const temp = weather.temp;
       const timesOfDay = [
-         { name: 'Moring', key: 'morn' },
+         { name: 'Morning', key: 'morn' },
          { name: 'Afternoon', key: 'day' },
          { name: 'Evening', key: 'eve' },
          { name: 'Night', key: 'night' },
@@ -307,7 +310,7 @@ export default class UI {
     */
    search(action) {
       const searchFormEl = document.getElementById('searchForm');
-      const query = document.getElementById('searchInput');
+      const query = searchFormEl.query;
 
       searchFormEl.onsubmit = (e) => {
          e.preventDefault();
