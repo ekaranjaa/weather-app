@@ -314,6 +314,7 @@ export default class UI {
 
       searchFormEl.onsubmit = (e) => {
          e.preventDefault();
+         if (!query.value) return;
          action(query.value);
       };
    }
