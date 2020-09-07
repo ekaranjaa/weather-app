@@ -18,7 +18,7 @@ export default function Icons() {
          squall: 'dust',
          tornado: 'tornado',
          clear: 'night-clear',
-         clouds: 'night-alt-cloudy',
+         clouds: 'night-alt-cloudy'
       };
    } else {
       icons = {
@@ -36,7 +36,7 @@ export default function Icons() {
          squall: 'dust',
          tornado: 'tornado',
          clear: 'day-sunny',
-         clouds: 'day-cloudy',
+         clouds: 'day-cloudy'
       };
    }
 

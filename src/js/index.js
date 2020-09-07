@@ -13,8 +13,11 @@ import Store from './modules/store.js';
  */
 document.addEventListener('DOMContentLoaded', () => UI.loadBg());
 
-// Get the weather from the user's location
-navigator.geolocation.getCurrentPosition((position) => {
+/**
+ * Get the weather from the user's location if they have
+ * no previous on the app.
+ */
+navigator.geolocation.getCurrentPosition(position => {
    window.onload = () => {
       let lat;
       let lon;
@@ -74,30 +77,30 @@ function getWeatherInfo(lat, lon) {
    // We generate a random number on every request to avoid service worker caching
    const random = Math.round(Math.random() * 999999);
 
-   HTTP.checkOnlineStatus().then((res) => {
+   HTTP.checkOnlineStatus().then(res => {
       if (res) {
          UII.updateOnlineStatus('online');
 
          req.get(
             `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}&rand=${random}`
          )
-            .then((res) => {
+            .then(res => {
                UII.setCurrentWeather(res);
                Store.saveWeather('current', res);
             })
-            .catch((err) => console.log(err));
+            .catch(err => console.log(err));
 
          req.get(
             `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}&rand=${random}`
          )
-            .then((res) => {
+            .then(res => {
                UII.setHourlyWeather(res.daily[0]);
                Store.saveWeather('hourly', res.daily[0]);
 
                UII.setDailyWeather(res.daily);
                Store.saveWeather('daily', res.daily);
             })
-            .catch((err) => console.log(err));
+            .catch(err => console.log(err));
       } else {
          UII.updateOnlineStatus('offline');
          UII.setCurrentWeather(Store.getWeather('current'));
@@ -137,14 +140,14 @@ function getWeatherInfoByCity(cityName) {
    const apiKey = process.env.API_KEY;
    const random = Math.round(Math.random() * 999999);
 
-   HTTP.checkOnlineStatus().then((res) => {
+   HTTP.checkOnlineStatus().then(res => {
       if (res) {
          UII.updateOnlineStatus('online');
 
          req.get(
             `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&units=metric&appid=${apiKey}&rand=${random}`
          )
-            .then((res) => {
+            .then(res => {
                UII.setCurrentWeather(res);
                Store.saveWeather('current', res);
 
@@ -154,16 +157,16 @@ function getWeatherInfoByCity(cityName) {
                req.get(
                   `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}&rand=${random}`
                )
-                  .then((res) => {
+                  .then(res => {
                      UII.setHourlyWeather(res.daily[0]);
                      Store.saveWeather('hourly', res.daily[0]);
 
                      UII.setDailyWeather(res.daily);
                      Store.saveWeather('daily', res.daily);
                   })
-                  .catch((err) => console.log(err));
+                  .catch(err => console.log(err));
             })
-            .catch((err) => console.log(err));
+            .catch(err => console.log(err));
       } else {
          UII.updateOnlineStatus('offline');
          UII.setCurrentWeather(Store.getWeather('current'));
@@ -186,17 +189,17 @@ function searchLocation(query) {
    const apiKey = process.env.API_KEY;
    const random = Math.round(Math.random() * 999999);
 
-   HTTP.checkOnlineStatus().then((res) => {
+   HTTP.checkOnlineStatus().then(res => {
       if (res) {
          req.get(
             `https://api.openweathermap.org/data/2.5/weather?q=${query}&units=metric&appid=${apiKey}&rand=${random}`
          )
-            .then((res) => UII.setSearchResults(res, getWeatherInfo))
-            .catch((err) => console.log(err));
+            .then(res => UII.setSearchResults(res, getWeatherInfo))
+            .catch(err => console.log(err));
       } else {
          const errorRes = {
             cod: 503,
-            message: "looks like you're offline.",
+            message: "looks like you're offline."
          };
          UII.setSearchResults(errorRes, getWeatherInfo);
       }
@@ -207,6 +210,6 @@ function searchLocation(query) {
 if ('serviceWorker' in navigator) {
    navigator.serviceWorker
       .register('/sw.js')
-      .then((reg) => console.log('SW registered'))
-      .catch((err) => console.log('SW registration failed', err));
+      .then(reg => console.log('SW registered'))
+      .catch(err => console.log('SW registration failed', err));
 }

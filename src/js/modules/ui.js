@@ -176,12 +176,12 @@ export default class UI {
       const temp = weather.main;
       const averages = [
          { name: 'Min', key: 'temp_min' },
-         { name: 'Max', key: 'temp_max' },
+         { name: 'Max', key: 'temp_max' }
       ];
 
       averageWeatherEl.innerHTML = '';
 
-      averages.forEach((av) => {
+      averages.forEach(av => {
          averageWeatherEl.innerHTML += `
             <div class="chip">
                <span class="title">${av.name}</span>
@@ -201,12 +201,12 @@ export default class UI {
          { name: 'Morning', key: 'morn' },
          { name: 'Afternoon', key: 'day' },
          { name: 'Evening', key: 'eve' },
-         { name: 'Night', key: 'night' },
+         { name: 'Night', key: 'night' }
       ];
 
       hourlyWeatherEl.innerHTML = '';
 
-      timesOfDay.forEach((time) => {
+      timesOfDay.forEach(time => {
          hourlyWeatherEl.innerHTML += `
             <div class="chip">
                <div class="chip-head">
@@ -234,7 +234,7 @@ export default class UI {
          for (let i = 0; i < 8; i++) {
             weekDays.push(`
             ${currentDate.toLocaleDateString(currentDate, {
-               weekday: 'short',
+               weekday: 'short'
             })},
             ${currentDate.toLocaleDateString(currentDate, { month: 'short' })}
             ${currentDate.getDate()}
@@ -264,7 +264,7 @@ export default class UI {
 
             return {
                max: Math.round(temp.max),
-               min: Math.round(temp.min),
+               min: Math.round(temp.min)
             };
          };
          const city = this.currentWeather.name;
@@ -312,7 +312,7 @@ export default class UI {
       const searchFormEl = document.getElementById('searchForm');
       const query = searchFormEl.query;
 
-      searchFormEl.onsubmit = (e) => {
+      searchFormEl.onsubmit = e => {
          e.preventDefault();
          if (!query.value) return;
          action(query.value);
@@ -411,7 +411,7 @@ export default class UI {
    loadSearchResults(action) {
       const resultCardEls = document.querySelectorAll('#searchResults .card');
 
-      resultCardEls.forEach((card) => {
+      resultCardEls.forEach(card => {
          card.onmouseover = () => {
             card.parentElement.classList.add('active');
          };

@@ -1,5 +1,5 @@
-const staticCache = 'static_vi';
-const dynamicCache = 'dynamic_vi';
+const staticCache = 'static_i';
+const dynamicCache = 'dynamic_i';
 const assets = [
    '/',
    '/favicon.ico',
@@ -11,11 +11,11 @@ const assets = [
    '/vendor/font/weathericons-regular-webfont.svg',
    '/vendor/font/weathericons-regular-webfont.ttf',
    '/vendor/font/weathericons-regular-webfont.woff',
-   '/vendor/font/weathericons-regular-webfont.woff2',
+   '/vendor/font/weathericons-regular-webfont.woff2'
 ];
 const limitCacheSize = (name, size) => {
-   caches.open(name).then((cache) => {
-      cache.keys().then((keys) => {
+   caches.open(name).then(cache => {
+      cache.keys().then(keys => {
          if (keys.length > size) {
             cache.delete(keys[0]).then(limitCacheSize(name, size));
          }
@@ -23,37 +23,37 @@ const limitCacheSize = (name, size) => {
    });
 };
 
-self.addEventListener('install', (e) => {
+self.addEventListener('install', e => {
    e.waitUntil(
-      caches.open(staticCache).then((cache) => {
+      caches.open(staticCache).then(cache => {
          cache.addAll(assets);
       })
    );
 });
 
-self.addEventListener('activate', (e) => {
+self.addEventListener('activate', e => {
    e.waitUntil(
-      caches.keys().then((keys) => {
+      caches.keys().then(keys => {
          Promise.all(
             keys
-               .filter((key) => key !== staticCache)
-               .map((key) => caches.delete(key))
+               .filter(key => key !== staticCache)
+               .map(key => caches.delete(key))
          );
       })
    );
 });
 
-self.addEventListener('fetch', (e) => {
+self.addEventListener('fetch', e => {
    if (!(e.request.url.indexOf('http') === 0) || e.request.method !== 'GET') {
       return;
    }
 
    e.respondWith(
-      caches.match(e.request).then((cacheRes) => {
+      caches.match(e.request).then(cacheRes => {
          return (
             cacheRes ||
-            fetch(e.request).then(async (fetchRes) => {
-               return await caches.open(dynamicCache).then((cache) => {
+            fetch(e.request).then(async fetchRes => {
+               return await caches.open(dynamicCache).then(cache => {
                   cache.put(e.request.url, fetchRes.clone());
                   limitCacheSize(dynamicCache, 20);
                   return fetchRes;
