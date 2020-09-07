@@ -19,7 +19,10 @@ navigator.geolocation.getCurrentPosition((position) => {
       let lat;
       let lon;
 
-      if (Store.getWeather('current') === null) {
+      if (
+         Store.getWeather('current') === undefined ||
+         Store.getWeather('current').length == 0
+      ) {
          lat = position.coords.latitude;
          lon = position.coords.longitude;
       } else {
