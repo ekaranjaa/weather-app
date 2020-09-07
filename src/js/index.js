@@ -90,13 +90,7 @@ function getWeatherInfo(lat, lon) {
             .then((res) => {
                UII.setHourlyWeather(res.daily[0]);
                Store.saveWeather('hourly', res.daily[0]);
-            })
-            .catch((err) => console.log(err));
 
-         req.get(
-            `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}&rand=${random}`
-         )
-            .then((res) => {
                UII.setDailyWeather(res.daily);
                Store.saveWeather('daily', res.daily);
             })
@@ -160,13 +154,7 @@ function getWeatherInfoByCity(cityName) {
                   .then((res) => {
                      UII.setHourlyWeather(res.daily[0]);
                      Store.saveWeather('hourly', res.daily[0]);
-                  })
-                  .catch((err) => console.log(err));
 
-               req.get(
-                  `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}&rand=${random}`
-               )
-                  .then((res) => {
                      UII.setDailyWeather(res.daily);
                      Store.saveWeather('daily', res.daily);
                   })

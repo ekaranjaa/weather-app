@@ -1,5 +1,5 @@
-const staticCache = 'static_iii';
-const dynamicCache = 'dynamic_iii';
+const staticCache = 'static_iv';
+const dynamicCache = 'dynamic_iv';
 const assets = [
    '/',
    '/favicon.ico',
