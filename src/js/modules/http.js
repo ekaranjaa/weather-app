@@ -4,9 +4,7 @@ export default class HTTP {
       const random = Math.round(Math.random() * 999999);
 
       try {
-         const online = await fetch(
-            `https://api.github.com/users/ekaranjaa?rand=${random}`
-         );
+         const online = await fetch(`/?rand=${random}`);
          return online.status >= 200 && online.status < 300;
       } catch (err) {
          return false;
