@@ -1,20 +1,41 @@
 .spinner {
    margin: auto;
+   position: relative;
    height: 30px;
    width: 30px;
    grid-column-end: span 4;
-   border: solid 3px transparent;
-   border-top-color: var(--secondary);
+   display: grid;
+   place-items: center;
    border-radius: 50%;
-   animation: spin 1s linear infinite;
+   overflow: hidden;
+
+   &::before,
+   &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      transform: scale(0.5);
+      background: var(--white);
+      border-radius: 50%;
+      animation: wripple 1s linear infinite;
+   }
+
+   &::after {
+      animation-delay: 0.2s;
+   }
 }
 
-@keyframes spin {
+@keyframes wripple {
    from {
-      transform: rotate(-360deg);
+      opacity: 1;
+      transform: scale(0.5);
    }
 
    to {
-      transform: rotate(360deg);
+      opacity: 0;
+      transform: scale(1.5);
    }
 }

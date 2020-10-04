@@ -49,10 +49,10 @@ export default class UI {
    }
 
    /**
-    * This method acceptsthe loading status and alerts
+    * This method accepts the loading status and alerts
     * the user if thy're offline.
     *
-    * @param status
+    * @param { String } status loading status
     */
    updateOnlineStatus(status) {
       const onlineStatusEl = document.getElementById('onlineStatus');
@@ -73,7 +73,7 @@ export default class UI {
     * and loads event information once the user clicks the
     * associated button.
     *
-    * @param action
+    * @param { Function } action getWeatherInfoByCity
     */
    loadEventInfo(action) {
       const loadEventInfoEl = document.getElementById('loadEventInfo');
@@ -89,7 +89,7 @@ export default class UI {
     *
     * Same thing with setHourlyWeather and setDailyWeather
     *
-    * @param weather
+    * @param { Object } weather Current weather
     */
    setCurrentWeather(weather) {
       this.currentWeather = weather;
@@ -306,7 +306,7 @@ export default class UI {
     * a parameter and calls it once the search form
     * is submitted
     *
-    * @param action
+    * @param { Function } action searchLocation
     */
    search(action) {
       const searchFormEl = document.getElementById('searchForm');
@@ -328,8 +328,8 @@ export default class UI {
     * We seperate this from the global weather responses
     * of this object since these results are just a preview.
     *
-    * @param weather
-    * @param action
+    * @param { Object } weather Search weather results
+    * @param { Function } action getWeatherInfo
     */
    setSearchResults(weather, action) {
       const searchResultsEl = document.getElementById('searchResults');

@@ -1,10 +1,11 @@
-const staticCache = 'static_i';
-const dynamicCache = 'dynamic_i';
+const staticCache = 'static_ii';
+const dynamicCache = 'dynamic_ii';
 const assets = [
    '/',
    '/favicon.ico',
    '/dist/bundle.js',
    '/dist/bundle.css',
+   '/dist/images/4841ed45b9fb9e5e501bb35d6264babf.jpg',
    'https://kit.fontawesome.com/885fbd8d84.js',
    '/vendor/css/weather-icons.min.css',
    '/vendor/font/weathericons-regular-webfont.eot',

@@ -65,8 +65,8 @@ navigator.geolocation.getCurrentPosition(position => {
  * The methods referenced here fetch the current,
  * hourly and daily weather respectively.
  *
- * @param lat
- * @param lon
+ * @param { Number } lat Latitude
+ * @param { Number } lon Longitude
  */
 function getWeatherInfo(lat, lon) {
    UI.loading();
@@ -130,7 +130,7 @@ setTimeout(() => {
  * `cityName` provided then pass the response all the way down to
  * the necessary UI elements.
  *
- * @param cityName
+ * @param { String } cityName
  */
 function getWeatherInfoByCity(cityName) {
    UI.loading();
@@ -179,7 +179,7 @@ function getWeatherInfoByCity(cityName) {
 /**
  * This is the method we use for search queries
  *
- * @param query
+ * @param { String } query Search query
  */
 function searchLocation(query) {
    UI.searching();
