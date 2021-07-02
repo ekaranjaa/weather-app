@@ -50,7 +50,7 @@ export default class UI {
 
    /**
     * This method accepts the loading status and alerts
-    * the user if thy're offline.
+    * the user if they're offline.
     *
     * @param { String } status loading status
     */
@@ -85,7 +85,7 @@ export default class UI {
 
    /**
     * This method gets the current weather, sets it globally then
-    * proceeds to print the data to the dom.
+    * show the data in the dom.
     *
     * Same thing with setHourlyWeather and setDailyWeather
     *

@@ -8,14 +8,14 @@ import HTTP from './modules/http.js';
 import Store from './modules/store.js';
 
 /**
- * We load the document background once everything else is
+ * Load the document background once everything else is
  * loaded to minimize load time.
  */
 document.addEventListener('DOMContentLoaded', () => UI.loadBg());
 
 /**
  * Get the weather from the user's location if they have
- * no previous on the app.
+ * no previous history in the app.
  */
 navigator.geolocation.getCurrentPosition(position => {
    window.onload = () => {
@@ -42,14 +42,14 @@ navigator.geolocation.getCurrentPosition(position => {
    const UII = new UI(); // User Interface Instance
 
    /**
-    * We initiate the loadEventInfo event and pass getWeatherInfoByCity
+    * Initiate the loadEventInfo event and pass getWeatherInfoByCity
     * method which gets the event information once the button associated
     * with it is clicked.
     */
    UII.loadEventInfo(getWeatherInfoByCity);
 
    /**
-    * We initiate the search event and pass searchLocation method
+    * Initiate the search event and pass searchLocation method
     * which handles the search query once the form is submitted.
     */
    UII.search(searchLocation);
@@ -74,7 +74,7 @@ function getWeatherInfo(lat, lon) {
    const UII = new UI();
    const req = new HTTP();
    const apiKey = process.env.API_KEY;
-   // We generate a random number on every request to avoid service worker caching
+   // Generate a random number on every request to avoid service worker caching
    const random = Math.round(Math.random() * 999999);
 
    HTTP.checkOnlineStatus().then(res => {
